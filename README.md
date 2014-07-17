@@ -1,4 +1,4 @@
-(https://raw.githubusercontent.com/montymole/png-to-xterm256/master/demo.png)
+![alt demo](https://raw.githubusercontent.com/montymole/png-to-xterm256/master/demo.png)
 
 <pre><code>
       ..                                 :.
