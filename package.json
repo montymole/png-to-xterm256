@@ -1,0 +1,30 @@
+{
+  "name": "png2xterm256",
+  "version": "0.0.1",
+  "description": "convert png image to xterm256 text banner",
+  "main": "png2ansi.js",
+  "dependencies": {
+    "png-js": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node png2ansi.js /pngs/test.png"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/montymole/png-to-xterm256.git"
+  },
+  "keywords": [
+    "png",
+    "ansi",
+    "ascii",
+    "converter",
+    "nodejs"
+  ],
+  "author": "Jussi Löf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/montymole/png-to-xterm256/issues"
+  },
+  "homepage": "https://github.com/montymole/png-to-xterm256"
+}
