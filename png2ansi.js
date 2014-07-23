@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
+var USE_COLOR = false,
+    //MAGIC_CHARS = "@80OCoc;:. ";
+    MAGIC_CHARS = "Gemni. ";
+
 var args = process.argv.slice(2),
     fs = require('fs'),
     PNG = require('png-js'),
-    charList = ("@80OCoc;:. ").split(""),
+    charList = (MAGIC_CHARS).split(""),
     prefix = '\x1b[';
 
 if (args.length < 1) {
@@ -43,21 +47,29 @@ img.decode(function(p) {
                 charIdx = l - Math.round(brightness * l);
 
                 //color
+                if (USE_COLOR) {
+                    if (r == 0 && g == 0 && b == 0) {
+                        newColor = prefix + '0:m';
+                    } else {
+                        newColor = prefix + '38;5;' + rgb(r, g, b) + 'm';
+                    }
 
-                newColor = prefix + '38;5;' + rgb(r, g, b) + 'm';
-                if (newColor != color) {
-                    color = newColor;
-                    bgcolor = prefix + '48;5;' + rgb(r / 6, g / 4, b / 2) + 'm';
+                    if (newColor != color) {
+                        color = newColor;
+                        bgcolor = prefix + '48;5;' + rgb(r / 6, g / 4, b / 2) + 'm';
+                        strChars += charList[charIdx] ? bgcolor + color : '';
+
+                    }
                 }
 
-                strChars += charList[charIdx] ? bgcolor + color + charList[charIdx] : ' ';
+                strChars += charList[charIdx] ? charList[charIdx] : ' ';
                 i = 0;
 
                 //line feed?
                 x++;
                 if (x >= img.width) {
                     x = 0;
-                    strChars += prefix + '0;m\n';
+                    strChars += USE_COLOR ? (prefix + '0;m\n') : '\n';
                 }
 
                 break;
@@ -73,7 +85,7 @@ img.decode(function(p) {
             }
         });
     } else {
-    	console.log(strChars);
-	}
+        console.log(strChars);
+    }
 
 });
