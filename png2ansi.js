@@ -1,21 +1,54 @@
 #!/usr/bin/env node
 
-var USE_COLOR = false,
-    //MAGIC_CHARS = "@80OCoc;:. ";
-    MAGIC_CHARS = "Gemni. ";
-
 var args = process.argv.slice(2),
-    fs = require('fs'),
-    PNG = require('png-js'),
-    charList = (MAGIC_CHARS).split(""),
-    prefix = '\x1b[';
+    IN_FILE = getFileArg(0),
+    OUT_FILE = getFileArg(1),
+    USE_COLOR = getArg('-color') != null,
+    MAGIC_CHARS = getArg('-chars') ? getArg('-chars') : '@Oo.';
 
-if (args.length < 1) {
-    console.log('args: inputfile.png outputfile.txt');
+if (!IN_FILE) {
+    console.log('args: inputfile.png outputfile.txt -color true -chars Xx.');
     process.exit(1);
 }
 
-var img = PNG.load(args[0]);
+
+var fs = require('fs'),
+    PNG = require('png-js'),
+    prefix = '\x1b[',
+    charList = (MAGIC_CHARS).split(""),
+    img = PNG.load(IN_FILE);
+
+charList.push(' ');
+
+
+function getFileArg(nth) {
+
+    var found = 0;
+
+    for (var i = 0; l = args.length, i < l; i++) {
+        //check if it's a .png
+        if (args[i].indexOf('.png') != -1) {
+            if (found == nth) return args[i];
+            found++;
+        }
+    }
+
+    return null;
+
+}
+
+function getArg(argId) {
+
+    var idx = args.indexOf(argId);
+
+    if (idx != -1) {
+        console.log('FOUND!');
+        if (args[idx + 1]) {
+            return args[idx + 1];
+        }
+    }
+    return null;
+}
 
 function rgb(r, g, b) {
     return 16 + (Math.round(r / 255 * 5) * 36) + (Math.round(g / 255 * 5) * 6) + Math.round(b / 255 * 5)
@@ -76,8 +109,8 @@ img.decode(function(p) {
         }
     }
 
-    if (args[1]) {
-        fs.writeFile(args[1], strChars, function(err) {
+    if (OUT_FILE) {
+        fs.writeFile(OUT_FILE, strChars, function(err) {
             if (err) {
                 console.log(err);
             } else {
